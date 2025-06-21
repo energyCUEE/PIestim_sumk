@@ -294,8 +294,8 @@ class sumk_objective(nn.Module): # Sum of k largest and lowest formulation
         n_k_largest = num_k_largest + 0.001
         n_k_lowest = num_k_lowest + 0.001
         
-        sum_k_largest_PIwidth = torch.sum(torch.topk(widths, num_k_largest, dim = 0, largest = True)[0].abs(), axis = 0)
-        sum_k_lowest_PIwidth = torch.sum(torch.topk(widths, num_k_lowest, dim = 0, largest = False)[0].abs(), axis = 0)
+        sum_k_largest_PIwidth = torch.sum(torch.topk(widths.abs(), num_k_largest, dim = 0, largest = True)[0], axis = 0)
+        sum_k_lowest_PIwidth = torch.sum(torch.topk(widths.abs(), num_k_lowest, dim = 0, largest = False)[0], axis = 0)
         
         PIwidth = sum_k_largest_PIwidth/(n_k_largest * y_range) + self.lambda_ * sum_k_lowest_PIwidth/(n_k_lowest * y_range)
         
