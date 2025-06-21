@@ -23,7 +23,7 @@ The proposed formulation is called the Sum-k formulation, which can be shown as
 	\mathcal{L}_{\text{sum}-k}(\theta) = \max(0, (1-\delta) - \text{PICP}(\theta)) + \gamma \frac{1}{R_{\text{quantile}}} \left [ \frac{1}{K} \sum_{i=1}^{K} |w(\theta)|_{[i]}  + \frac{\lambda}{N-K} \sum_{i=K+1}^{N} |w(\theta)|_{[i]} \right ],
 \end{equation}
 ```
-where $|w(\theta)|_{[i]}$ is the $i^{\mathrm{th}}$ largest width's absolute value, with $|w|_{[1]} \geq |w|_{[2]} \geq \cdots \geq |w|_{[N]}$.
+where $\vert w \vert_{[i]}$ is the $i^{\mathrm{th}}$ largest absolute PI width element, with $\vert w \vert_{[1]}  \geq \vert w \vert_{[2]}  \geq \cdots  \geq  \vert w \vert_{[N]} $.
 
 An example of the PI characteristics of the Sum-k formulation on synthetic data is illustrated below.
 <p align="center">
