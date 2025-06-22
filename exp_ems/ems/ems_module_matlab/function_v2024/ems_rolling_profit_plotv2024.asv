@@ -1,0 +1,139 @@
+function [f_profit, f_Pnet_actual, f_Pnet_forecast, f_Pnet_mix] = ems_rolling_profit_plotv2024(sol_rolling)
+    
+    PARAM = sol_rolling.PARAM;
+    
+    Pnet_ems = sol_rolling.Pnet; %Pnet from planning EMS
+    Pnet_actual = PARAM.NL_actual + sum(sol_rolling.Pchg,2) - sum(sol_rolling.Pdchg,2);
+
+    resolution_HR = PARAM.Resolution/60; % (min) Resolution in minutes
+    
+    profit_ems = resolution_HR * PARAM.normalize_factor * ( max(0,-Pnet_ems).*PARAM.Sell_rate - max(0,Pnet_ems).*PARAM.Buy_rate );
+    profit_actual = resolution_HR * PARAM.normalize_factor * ( max(0,-Pnet_actual).*PARAM.Sell_rate - max(0,Pnet_actual).*PARAM.Buy_rate );
+    
+    cum_profit_ems = cumsum(profit_ems);
+    cum_profit_actual = cumsum(profit_actual);
+    
+
+    cum_error_percent = ( cum_profit_ems(end) - cum_profit_actual(end) ) / cum_profit_actual(end) * 100;
+
+    disp(['Cumulative profit error = ', num2str(cum_error_percent), ' %']);
+    
+    
+    % -----------------------------
+    % Plot graph cumulative profit
+    % -----------------------------
+    f_profit = figure;
+    t_profit = tiledlayout(4,4,'TileSpacing','loose','Padding','loose');
+    
+    % Create an array to hold axes handles
+    ax = gobjects(1,16);
+    
+    for m = 3:12
+        % Extract data for each month
+        idx = (month(sol_rolling.datetime) == m);
+        
+        % Reset cumsum at the start of each month
+        month_cum_profit_ems = cumsum([0; diff(cum_profit_ems(idx))]); 
+        month_cum_profit_actual = cumsum([0; diff(cum_profit_actual(idx))]); 
+    
+        % Subplot for Expenditure Comparison
+        ax(m) = nexttile;
+        stairs(sol_rolling.datetime(idx), month_cum_profit_ideal, 'b', 'LineWidth', 1.5);
+        hold on;
+        stairs(sol_rolling.datetime(idx), month_cum_profit_ems, 'r', 'LineWidth', 1.5);
+        stairs(sol_rolling.datetime(idx), month_cum_profit_actual, 'g', 'LineWidth', 1.5);
+        title(['Month ', int2str(m)]);
+        ylabel('Cum. profit [THB]');
+        grid on;
+        hold off;
+    end
+    
+    % % Set the same y-axis limits for the first 3 rows (tiles 1 to 12)
+    % idx_1to12 = 1:12;
+    % y_mins = arrayfun(@(a) min(ax(a).YLim), idx_1to12);
+    % y_maxs = arrayfun(@(a) max(ax(a).YLim), idx_1to12);
+    % y_lim = [min(y_mins), max(y_maxs)];
+    % set(ax(idx_1to12), 'YLim', y_lim);
+    
+    
+    % Merge the last row (tile 13) to plot a full-year cumulative profit
+    ax(13) = nexttile([1 4]);
+    hold on;
+    stairs(sol_rolling.datetime, cum_profit_ems, 'r', 'LineWidth', 1.5);
+    stairs(sol_rolling.datetime, cum_profit_actual, 'g', 'LineWidth', 1.5);
+
+    title('Year 2024');
+    xlabel('Time');
+    ylabel('Cum. profit [THB]');
+    grid on;
+    hold off;
+    
+    % Create a global legend outside the subplots
+    lgd = legend({'Ideal', 'EMS', 'Actual', 'No EMS'}, 'Location', 'southoutside', 'Orientation', 'horizontal');
+    lgd.Layout.Tile = 'south';
+    
+    sgtitle('Compare cumulative profit with actual and forecast data', 'FontWeight', 'bold');
+    
+    fontsize(0.45,'centimeters');
+
+    
+    % ----------------------
+    % Plot graph Pnet_actual
+    % ----------------------
+    f_Pnet_actual = figure;
+    t_Pnet_actual = tiledlayout(3,4,'TileSpacing','loose','Padding','loose');
+
+    for m = 1:12
+        idx = (month(sol_rolling_actual.datetime) == m);
+        
+        nexttile;
+        stairs(sol_rolling_actual.datetime(idx), Pnet_ideal(idx), 'b', 'LineWidth', 1.5);
+        title(['Month ', int2str(m)]);
+        xlabel('Time');
+        ylabel('Power [kW]');
+        grid on;
+    end
+    sgtitle('P_{net} with objective profit with actual data and optimization solution', 'FontWeight', 'bold');
+    
+    fontsize(0.5,'centimeters')
+
+    % ------------------------
+    % Plot graph Pnet_forecast
+    % ------------------------
+    f_Pnet_forecast = figure;
+    t_Pnet_forecast = tiledlayout(3,4,'TileSpacing','loose','Padding','loose');
+
+    for m = 1:12
+        idx = (month(sol_rolling.datetime) == m);
+        
+        nexttile;
+        stairs(sol_rolling.datetime(idx), Pnet_ems(idx), 'r', 'LineWidth', 1.5);
+        title(['Month ', int2str(m)]);
+        xlabel('Time');
+        ylabel('Power [kW]');
+        grid on;
+    end
+    sgtitle('P_{net} with objective profit with forecast data and optimization solution', 'FontWeight', 'bold');
+    
+    fontsize(0.5,'centimeters')
+
+    % -------------------
+    % Plot graph Pnet_mix
+    % -------------------
+    f_Pnet_mix = figure;
+    t_Pnet_mix = tiledlayout(3,4,'TileSpacing','loose','Padding','loose');
+
+    for m = 1:12
+        idx = (month(sol_rolling.datetime) == m);
+        
+        nexttile;
+        stairs(sol_rolling.datetime(idx), Pnet_actual(idx), 'g', 'LineWidth', 1.5);
+        title(['Month ', int2str(m)]);
+        xlabel('Time');
+        ylabel('Power [kW]');
+        grid on;
+    end
+    sgtitle('P_{net} with objective profit with actual data and forecast optimization solution', 'FontWeight', 'bold');
+
+    fontsize(0.5,'centimeters')
+end
