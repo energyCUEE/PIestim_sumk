@@ -78,4 +78,7 @@ The article includes four experiments—synthetic data, solar irradiance forecas
 	- [**result**](./exp_reservecost/result) stores the same result from the solar experiment used to evaluate the reserve preparation cost.
 	- [**reservecost_cal.ipynb**](./exp_reservecost/reservecost_cal.ipynb) demonstrates the calculation of the reserve preparation cost.
 
-- `exp_ems`
+- `exp_ems` includes the code for running a robust EMS experiment used in Section 7.2 of the article.
+	- [**netload_experiment**](./exp_ems/netload_experiment) includes `.py` file used to constructed the prediction intervals from each method in the experiment. 
+	- [**ems**](./exp_ems/ems) stores MATLAB modules for running the robust EMS from PI of net load results. [**ems_actual_predict.m**](./exp_ems/ems/ems_module_matlab/ems_actual_predict.m) is used to run the robust EMS with given net load data, while [**evaluation.m**](./exp_ems/ems/ems_module_matlab/evaluation.m) is used to evaluate the results and generate figure outputs.
+
