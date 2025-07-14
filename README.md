@@ -2,14 +2,16 @@
 This GitHub repository contains the code used for the experiments described in the article "Neural Network-Based Prediction Interval Estimation with Large Width Penalization for Renewable Energy Forecasting and System Applications."
 ## Citation
 ```
-@misc{amnuaypongsa2024largewidthpenalizationneural,
-      title={Large width penalization for neural network-based prediction interval estimation}, 
-      author={Worachit Amnuaypongsa and Jitkomut Songsiri},
-      year={2024},
-      eprint={2411.19181},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2411.19181}, 
+@article{AMNUAYPONGSA2025101119,
+title = {Neural network-based prediction interval estimation with large width penalization for renewable energy forecasting and system applications},
+journal = {Energy Conversion and Management: X},
+pages = {101119},
+year = {2025},
+issn = {2590-1745},
+doi = {https://doi.org/10.1016/j.ecmx.2025.101119},
+url = {https://www.sciencedirect.com/science/article/pii/S259017452500251X},
+author = {Worachit Amnuaypongsa and Wijarn Wangdee and Jitkomut Songsiri},
+keywords = {Probabilistic forecasting, Prediction intervals (PIs), Uncertainty quantification, Neural networks, Solar irradiance forecasting, Robust energy management system}
 }
 ```
 Contact: `worachitam@gmail.com`
