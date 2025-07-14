@@ -38,25 +38,44 @@ A simple example of the PI construction utilizing our formulation is presented i
 ## Repository
 This repository is structured as follows:
 ```
-|-- utils
-|   |-- formulations.py
-|   |-- networks.py
-|   |-- trainer.py
-|-- experiment
-|   |-- pi_characteristics
-|   |-- benchmark
-|   |-- input_data
-|   |-- hyperparameter
-|-- paper_figure
-|   |-- visualization.ipynb
-|   |-- saved_figures
+|-- exp_ems
+|   |-- data
+|   |-- ems
+|   |-- netload_experiment
+|   |-- utils
+|-- exp_reserve
+|   |-- data
+|   |-- result
+|   |-- utils
+|   |-- reservecost_cal.ipynb
+|-- exp_solar
+|   |-- data
+|   |-- experiment
+|   |-- paper_figure
+|   |-- utils
+|-- exp_synthetics
+|   |-- experiment
+|   |-- paper_figure
+|   |-- utils
 |-- demo.ipynb
 ```
-- `utils` folder consists of `.py` files that define the loss function, neural network architecture, and training algorithms.
+The article includes four experiments—synthetic data, solar irradiance forecasting, reserve preparation, and robust energy management—each stored in its own folder named `exp_synthetics`, `exp_solar`, `exp_reserve`, and `exp_ems` respectively. The dataset used in solar and EMS experiments is not available in this repository due to data privacy.
+- Each experiment have `utils` folder that consists of `.py` fiels that define the loss function, neural network architecture, and training algorithms.
 	- `formulation.py` consists of all loss functions used in this study, including our formulation.
 	- `networks.py` consists of a neural network model structure
 	- `trainer.py` includes a training algorithm, evaluation metrics calculation, and result plots generation.
-- `experiment` includes all experiment corresponding codes and datasets utilized in Section 5 of the article. The experiment is divided into two experiments:
-	- [**pi_characteristics**](./experiment/pi_characteristics) explores the trade-off curve between PICP and PI width as described in Section 4.3.1 and the results presented in Section 5 of the article.
- 	- [**benchmark**](./experiment/benchmark) compares the performance metrics and PI width histogram from every method as described in Section 4.3.2, with the results presented in Section 5 of the article.
-- The `paper_figure` folder contains the figures used in this article along with the code for generating them ([**visualization.ipynb**](./paper_figure/visualization.ipynb)).
+
+- `exp_synthetics` includes all experiment corresponding codes and datasets utilized in Section 5 of the article. The experiment is divided into two experiments:
+	- [**pi_characteristics**](./exp_synthetics/experiment/pi_characteristics) explores the trade-off curve between PICP and PI width as described in Section 4.3.1 and the results presented in Section 5 of the article.
+ 	- [**benchmark**](./exp_synthetics/experiment/benchmark) compares the performance metrics and PI width histogram from every method as described in Section 4.3.2, with the results presented in Section 5 of the article.
+	- The `paper_figure` folder contains the figures used in Section 5 of this article along with the code for generating them ([**visualization.ipynb**](./exp_synthetics/paper_figure/visualization.ipynb)).
+
+ - `exp_solar` includes the solar experiment codes used in Section 6 of the article, excluding the dataset.
+   	- [**experiment**](./exp_solar/experiment) includes `.py` file used to construct the prediction intervals from each method in the experiment. [**point_forecast.ipynb**](./exp_solar/experiment/point_forecast.ipynb) is used to generate the point forecast for reserve cost preparation calculations.
+   	- The `paper_figure` folder contains the figures used in Section 6 of this article along with the code for generating them ([**visualization.ipynb**](./exp_solar/paper_figure/visualization.ipynb)).
+  
+- `exp_reservecost` includes the code for reserve preparation cost from the PI of solar irradiance used in Section 7.1 of the article.
+	- [**result**](./exp_reservecost/result) stores the same result from the solar experiment used to evaluate the reserve preparation cost.
+	- [**reservecost_cal.ipynb**](./exp_reservecost/reservecost_cal.ipynb) demonstrates the calculation of the reserve preparation cost.
+
+- `exp_ems`
